@@ -1,318 +1,166 @@
-# A história por trás do Feature Knowledge Agent System
+# Codemind
 
-## O problema invisível
+> Preservando conhecimento crítico de software além do código.
 
-Toda equipa de desenvolvimento vive a mesma ilusão:
+O **Codemind** é uma iniciativa para transformar conhecimento tácito de funcionalidades em uma camada estruturada, versionável e utilizável ao longo da evolução de um sistema.
 
-> "O código está no Git, então o conhecimento está seguro."
+A proposta parte de um problema recorrente em times de software:  
+o código registra a implementação, mas raramente preserva com clareza o contexto que realmente importa para manutenção segura — como regras de negócio, invariantes, contratos, decisões e efeitos colaterais.
 
-Mas isso quase nunca é verdade.
+---
 
-O código guarda **o que foi feito**.
+## Problema
 
-Raramente guarda **por que foi feito**, **o que não pode mudar**,
-**quais regras de negócio estão escondidas ali** e **quais efeitos
-colaterais existem**.
+Em muitos sistemas, conhecimento crítico fica distribuído entre:
 
-E é aí que nasce o problema.
+- a memória de quem implementou
+- validações aparentemente redundantes
+- decisões não documentadas
+- testes que protegem comportamentos sem explicá-los explicitamente
+- detalhes de domínio espalhados em diferentes partes do código
 
-Imagine um hospital.
+Quando esse contexto não é capturado, o time passa a depender excessivamente de especialistas individuais.  
+Com o tempo, isso gera:
 
-Um sistema de marcação de consultas foi evoluído durante dois anos.
+- maior risco em mudanças
+- manutenção mais lenta
+- dificuldade de onboarding
+- revisões sem contexto de negócio
+- regressões difíceis de antecipar
 
-Vários developers tocaram nele.
+Em outras palavras: o sistema continua existindo, mas o entendimento sobre ele se deteriora.
 
-Mas houve um developer específico --- Miguel --- que passou seis meses
-construindo a lógica de agendamento.
+---
 
-Miguel aprendeu, na prática, coisas que não estavam em documento nenhum:
+## Proposta
 
--   pacientes oncológicos têm prioridade especial
--   determinados seguros exigem autorização prévia
--   alguns médicos não podem ser agendados em blocos consecutivos por
-    regulamentação interna
--   certos tipos de consultas exigem preparação mínima de 24 horas
+O Codemind propõe uma arquitetura em que cada funcionalidade possa ter um **agente contextual especializado**, capaz de representar e utilizar o conhecimento essencial daquela feature.
 
-Nada disso estava completamente documentado.
+Esse agente pode compreender, por exemplo:
 
-Porque o prazo era curto.
+- intenção funcional
+- contratos de entrada e saída
+- invariantes
+- regras de negócio
+- dependências relevantes
+- efeitos colaterais esperados
+- comportamentos protegidos por testes
+- decisões importantes de implementação
 
-Porque a prioridade era entregar.
+O objetivo não é substituir documentação ou engenharia de software tradicional, mas complementar o desenvolvimento com uma camada de preservação de contexto.
 
-Porque o conhecimento foi ficando embutido no código.
+---
 
-O código funcionava.
+## Conceito central
 
-Até que Miguel saiu do projeto.
+### Feature Knowledge Agent
 
-------------------------------------------------------------------------
+Um **Feature Knowledge Agent** é um agente especializado no domínio de uma funcionalidade específica.
 
-## O incidente
+Sua função é atuar como uma memória operacional da feature, ajudando a:
 
-Três meses depois, uma nova developer, Sofia, recebeu uma task simples:
+- preservar conhecimento tácito
+- tornar restrições implícitas mais visíveis
+- apoiar a análise de impacto de mudanças
+- identificar possíveis quebras de contrato ou comportamento
+- conectar implementação, testes e intenção funcional
+- alimentar documentação viva
 
-> "Melhorar performance do agendamento."
+---
 
-Ela identificou uma validação aparentemente redundante:
+## Como funciona
 
-``` java
-if (patient.hasPriorityCondition()) {
-   validateSpecialSchedulingRules();
-}
-```
+De forma conceitual, o fluxo é o seguinte:
 
-Parecia custosa.
+1. uma funcionalidade é implementada
+2. o conhecimento relevante é extraído e estruturado
+3. esse conhecimento é versionado junto ao projeto
+4. um agente especializado passa a operar sobre esse contexto
+5. mudanças futuras podem ser avaliadas com base nesse conhecimento
+6. a documentação pode ser derivada da implementação real
 
-Parecia desnecessária.
+---
 
-Parecia duplicada.
+## O que o projeto busca resolver
 
-Removeu.
+O Codemind busca reduzir problemas como:
 
-Todos os testes passaram.
+- perda de conhecimento com rotatividade
+- dependência excessiva de especialistas
+- dificuldade em entender o “porquê” do código
+- alterações seguras do ponto de vista técnico, mas incorretas do ponto de vista de negócio
+- documentação desatualizada
+- baixa rastreabilidade entre regras, testes e comportamento do sistema
 
-Code review aprovado.
+---
 
-Deploy realizado.
+## Objetivos
 
-Dois dias depois:
+- estruturar conhecimento por funcionalidade
+- capturar contexto além da implementação
+- representar regras e invariantes de forma reutilizável
+- apoiar revisão contextual de mudanças
+- gerar documentação viva
+- preservar continuidade operacional do sistema
+- reduzir risco invisível em manutenção e evolução
 
--   pacientes prioritários começaram a ser agendados incorretamente
--   hospitais reclamaram
--   auditorias foram abertas
--   o SLA foi quebrado
+---
 
-O problema?
+## Roadmap inicial
 
-Aquela validação representava uma regra crítica de negócio.
+### 1. Fundamentos conceituais
+- [ ] definir o modelo de conhecimento por feature
+- [ ] mapear entidades, relações e responsabilidades
+- [ ] delimitar o papel dos agentes no ciclo de desenvolvimento
 
-Mas ninguém sabia.
+### 2. Estruturação do conhecimento
+- [ ] representar intenção funcional
+- [ ] modelar contratos, invariantes e restrições
+- [ ] conectar testes a comportamentos esperados
 
-Miguel sabia.
+### 3. Agentes contextuais
+- [ ] projetar agentes especializados por funcionalidade
+- [ ] apoiar análise de impacto em mudanças
+- [ ] identificar risco semântico em alterações
 
-E Miguel não estava mais lá.
+### 4. Documentação viva
+- [ ] gerar documentação derivada da implementação
+- [ ] explicitar fluxos, regras e decisões relevantes
+- [ ] manter documentação alinhada à evolução do código
 
-------------------------------------------------------------------------
+---
 
-## O padrão se repete em bancos
+## Visão
 
-Agora imagine um banco.
+Construir sistemas em que o conhecimento crítico não dependa exclusivamente de pessoas, mas possa ser preservado, consultado e utilizado como parte da própria arquitetura do software.
 
-Joana implementou a feature de autorização de transferências.
+Em um cenário ideal:
 
-Durante meses, aprendeu nuances como:
+- regras importantes não ficam invisíveis
+- funcionalidades conseguem ser compreendidas com mais contexto
+- mudanças se tornam mais seguras
+- documentação reflete comportamento real
+- a continuidade do sistema não depende apenas da memória do time
 
--   certas contas premium possuem limites dinâmicos
--   transferências internacionais precisam de antifraude adicional
--   transações acima de certos thresholds exigem dupla autorização
--   operações repetidas precisam ser idempotentes
+---
 
-Essas regras estavam espalhadas em:
+## Contribuição
 
--   services
--   validators
--   interceptors
--   listeners
--   testes
+Contribuições são bem-vindas, especialmente em temas como:
 
-Joana entendia.
+- modelagem de conhecimento
+- arquitetura de agentes
+- representação de invariantes e contratos
+- documentação viva
+- análise de impacto semântico
+- engenharia de contexto aplicada ao desenvolvimento de software
 
-A equipa não.
+Se a proposta fizer sentido para você, sinta-se à vontade para abrir uma issue ou iniciar uma discussão.
 
-Meses depois, alguém alterou uma regra de retry.
+---
 
-Sem perceber, quebrou a idempotência.
+## Status
 
-O sistema debitou duas vezes.
+Projeto em construção.
 
-O cliente abriu reclamação.
-
-O banco teve prejuízo.
-
-------------------------------------------------------------------------
-
-## O verdadeiro problema
-
-Não é código.
-
-Não é documentação.
-
-Não é code review.
-
-É a fragilidade do conhecimento humano.
-
-Hoje o conhecimento crítico vive em três lugares:
-
-1.  na cabeça de quem implementou
-2.  em decisões não documentadas
-3.  em comportamentos inferidos pelos testes
-
-E isso cria dependência humana.
-
-O sistema fica refém de especialistas.
-
-O negócio fica refém da memória.
-
-A manutenção vira arqueologia.
-
-------------------------------------------------------------------------
-
-## A mudança de paradigma
-
-E se cada funcionalidade pudesse "explicar a si mesma"?
-
-E se cada feature tivesse um guardião?
-
-E se toda regra descoberta durante a implementação fosse capturada?
-
-E se o conhecimento tácito fosse convertido em conhecimento operacional?
-
-Nasce então um novo conceito:
-
-**Feature Knowledge Agent**
-
-Não um agente de IA genérico.
-
-Mas um agente especialista naquele domínio.
-
-Um agente que conhece:
-
--   fronteiras da feature
--   contratos de entrada e saída
--   invariantes
--   regras de negócio
--   dependências
--   efeitos colaterais
--   testes comportamentais
-
-------------------------------------------------------------------------
-
-## Como funciona na prática
-
-Quando um developer implementa uma feature, ele não entrega apenas
-código.
-
-Entrega conhecimento.
-
-O sistema extrai:
-
--   intenção funcional
--   contratos
--   invariantes
--   exemplos
--   fluxos
--   decisões
-
-Esse conhecimento é versionado junto ao código.
-
-E um agente local aprende aquilo.
-
-Depois disso:
-
-Quando alguém altera a feature:
-
-o agente revisa.
-
-Pergunta:
-
-> Isso quebra alguma regra?
-
-> Isso altera algum contrato?
-
-> Isso viola algum comportamento esperado?
-
-> Isso impacta integrações?
-
-> Isso remove uma proteção crítica?
-
-Se sim:
-
-o merge falha.
-
-------------------------------------------------------------------------
-
-## O agente documentador
-
-Mas há mais.
-
-O mesmo conhecimento alimenta outro agente.
-
-O agente documentador.
-
-Ele observa:
-
--   implementação
--   testes
--   contratos
--   fluxos
-
-E gera documentação viva.
-
-Não documentação manual.
-
-Mas documentação derivada do comportamento real.
-
-------------------------------------------------------------------------
-
-## O resultado
-
-Antes:
-
-Pessoa → Conhecimento → Código → Perda de contexto
-
-Depois:
-
-Pessoa → Conhecimento → Estrutura → Agente → Proteção → Documentação →
-Continuidade
-
-------------------------------------------------------------------------
-
-## O impacto organizacional
-
-Isso muda a forma de construir software.
-
-Antes:
-
-"Quem mexeu nisso?"
-
-Depois:
-
-"O agente desse domínio sabe."
-
-Antes:
-
-"Precisamos falar com quem implementou."
-
-Depois:
-
-"O conhecimento já foi capturado."
-
-Antes:
-
-"Vamos descobrir no código."
-
-Depois:
-
-"Vamos consultar o agente."
-
-------------------------------------------------------------------------
-
-## O objetivo final
-
-Construir sistemas onde o conhecimento não morre com a rotatividade.
-
-Onde regras críticas não ficam escondidas.
-
-Onde code review entende negócio.
-
-Onde documentação nasce da implementação.
-
-Onde manutenção deixa de ser adivinhação.
-
-Porque no fim:
-
-o maior risco de um sistema não é bug.
-
-É conhecimento perdido.
-
-E conhecimento perdido é dívida operacional invisível.
+O conceito está em evolução e o repositório representa o início da exploração dessa ideia.
